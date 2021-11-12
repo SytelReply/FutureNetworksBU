@@ -23,7 +23,9 @@ The REST server exposes a simple gateway to the GRPC server.
 The code to achieve the above is intentionally written impractically. 
 
 1. Find and refactor any areas that could be improved.
-2. Dockerise and make these services configurable (e.g. which port).
-3. Create kubernetes config to allow this to be deployed to a cluster.
-
-(BONUS - write tests)
+2. Add an rpc to the proto definition that allows the retrieval of a single VLAN by id.
+3. Implement the above rpc in our grpc handler & create a gateway REST handler that makes a call to this new rpc (in a similar fashion to the other gateway handlers).
+4. Dockerise and make these services configurable (e.g. ports/addresses/timeouts).
+5. Create kubernetes config to allow this to be deployed to a cluster.
+6. Ensure reasonably production ready (e.g. unit tests).
+7. Document how to run the services.
