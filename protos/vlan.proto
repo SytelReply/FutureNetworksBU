@@ -1,0 +1,29 @@
+syntax= "proto3";
+
+import "google/protobuf/empty.proto";
+
+option go_package = "./vlan";
+package vlan;
+
+service V1 {
+  rpc SaveVLAN (VLAN) returns (SaveVLANResponse) {}
+  rpc GetVLANs (google.protobuf.Empty) returns (GetVLANsResponse) {}
+}
+
+message VLAN {
+  string id = 1;
+  string vlan = 2;
+}
+
+message SaveVLANResponse {
+  State state = 1;
+}
+
+message GetVLANsResponse {
+  repeated VLAN vlans = 1;
+}
+
+enum State {
+  OK = 0;
+  NOK = 1;
+}
