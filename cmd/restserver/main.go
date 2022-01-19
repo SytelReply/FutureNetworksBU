@@ -1,7 +1,7 @@
 package main
 
 import (
-	"code-challenge/internal/rest"
+	"github.com/James-Milligan/FutureNetworksBU/internal/rest"
 	"log"
 )
 

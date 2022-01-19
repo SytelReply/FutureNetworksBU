@@ -1,7 +1,7 @@
 package main
 
 import (
-	"code-challenge/internal/grpc"
+	"github.com/James-Milligan/FutureNetworksBU/internal/grpc"
 	"log"
 )
 

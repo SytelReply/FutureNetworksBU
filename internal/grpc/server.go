@@ -1,24 +1,22 @@
 package grpc
 
 import (
-	vlanproto "code-challenge/protos"
 	"fmt"
+	vlanproto "github.com/James-Milligan/FutureNetworksBU/protos"
+	"google.golang.org/grpc"
 	"log"
 	"net"
 	"os"
-
-	"google.golang.org/grpc"
 )
 
 var Server *server
 
 var GRPC_SERVER_PORT = os.Getenv("GRPC_SERVER_PORT")
-var REST_SERVER_PORT = os.Getenv("REST_SERVER_PORT")
 
 var grpcListenAddress = fmt.Sprintf(":%s", GRPC_SERVER_PORT)
 
 func init() {
-	if GRPC_SERVER_PORT == "" || REST_SERVER_PORT == "" {
+	if GRPC_SERVER_PORT == "" {
 		log.Fatal("Missing environment variables")
 	}
 	fmt.Printf("Starting gRPC server on port %s\n", GRPC_SERVER_PORT)

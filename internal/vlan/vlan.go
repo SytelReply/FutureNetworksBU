@@ -1,7 +1,7 @@
 package vlan
 
 import (
-	vlanproto "code-challenge/protos"
+	vlanproto "github.com/James-Milligan/FutureNetworksBU/protos"
 	"strings"
 )
 

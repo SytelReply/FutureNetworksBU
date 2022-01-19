@@ -1,9 +1,9 @@
 package grpc
 
 import (
-	"code-challenge/internal/vlan"
-	vlanproto "code-challenge/protos"
 	"context"
+	"github.com/James-Milligan/FutureNetworksBU/internal/vlan"
+	vlanproto "github.com/James-Milligan/FutureNetworksBU/protos"
 	"google.golang.org/grpc/codes"
 
 	"google.golang.org/grpc/status"

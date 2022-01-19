@@ -1,8 +1,8 @@
 package rest
 
 import (
-	vlanproto "code-challenge/protos"
 	"fmt"
+	vlanproto "github.com/James-Milligan/FutureNetworksBU/protos"
 	"log"
 	"net/http"
 	"os"
@@ -45,7 +45,7 @@ func init() {
 }
 
 func grpcClient() vlanproto.V1Client {
-	conn, err := grpc.Dial(fmt.Sprintf("localhost:%s", GRPC_SERVER_PORT), grpc.WithInsecure(), grpc.WithBlock())
+	conn, err := grpc.Dial(fmt.Sprintf("net-reply-service:%s", GRPC_SERVER_PORT), grpc.WithInsecure(), grpc.WithBlock())
 	if err != nil {
 		log.Fatalf("did not connect: %v", err)
 	}
@@ -54,5 +54,6 @@ func grpcClient() vlanproto.V1Client {
 }
 
 func (s *server) Run() error {
+	fmt.Println("Listening...")
 	return http.ListenAndServe(fmt.Sprintf(":%d", s.port), s.router)
 }

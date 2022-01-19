@@ -1,9 +1,9 @@
 package rest
 
 import (
-	vlanproto "code-challenge/protos"
 	"encoding/json"
 	"fmt"
+	vlanproto "github.com/James-Milligan/FutureNetworksBU/protos"
 	"github.com/gorilla/mux"
 	"google.golang.org/grpc/codes"
 	"google.golang.org/grpc/status"
