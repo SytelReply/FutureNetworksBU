@@ -7,7 +7,6 @@ import (
 	grpc "google.golang.org/grpc"
 	codes "google.golang.org/grpc/codes"
 	status "google.golang.org/grpc/status"
-	emptypb "google.golang.org/protobuf/types/known/emptypb"
 )
 
 // This is a compile-time assertion to ensure that this generated file
@@ -19,8 +18,9 @@ const _ = grpc.SupportPackageIsVersion7
 //
 // For semantics around ctx use and closing/ending streaming RPCs, please refer to https://pkg.go.dev/google.golang.org/grpc/?tab=doc#ClientConn.NewStream.
 type V1Client interface {
-	SaveVLAN(ctx context.Context, in *VLAN, opts ...grpc.CallOption) (*SaveVLANResponse, error)
-	GetVLANs(ctx context.Context, in *emptypb.Empty, opts ...grpc.CallOption) (*GetVLANsResponse, error)
+	SaveVLAN(ctx context.Context, in *SaveVLANRequest, opts ...grpc.CallOption) (*SaveVLANResponse, error)
+	GetVLANs(ctx context.Context, in *GetVLANsRequest, opts ...grpc.CallOption) (*GetVLANsResponse, error)
+	GetVLAN(ctx context.Context, in *GetVLANRequest, opts ...grpc.CallOption) (*GetVLANResponse, error)
 }
 
 type v1Client struct {
@@ -31,7 +31,7 @@ func NewV1Client(cc grpc.ClientConnInterface) V1Client {
 	return &v1Client{cc}
 }
 
-func (c *v1Client) SaveVLAN(ctx context.Context, in *VLAN, opts ...grpc.CallOption) (*SaveVLANResponse, error) {
+func (c *v1Client) SaveVLAN(ctx context.Context, in *SaveVLANRequest, opts ...grpc.CallOption) (*SaveVLANResponse, error) {
 	out := new(SaveVLANResponse)
 	err := c.cc.Invoke(ctx, "/vlan.V1/SaveVLAN", in, out, opts...)
 	if err != nil {
@@ -40,9 +40,18 @@ func (c *v1Client) SaveVLAN(ctx context.Context, in *VLAN, opts ...grpc.CallOpti
 	return out, nil
 }
 
-func (c *v1Client) GetVLANs(ctx context.Context, in *emptypb.Empty, opts ...grpc.CallOption) (*GetVLANsResponse, error) {
+func (c *v1Client) GetVLANs(ctx context.Context, in *GetVLANsRequest, opts ...grpc.CallOption) (*GetVLANsResponse, error) {
 	out := new(GetVLANsResponse)
 	err := c.cc.Invoke(ctx, "/vlan.V1/GetVLANs", in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *v1Client) GetVLAN(ctx context.Context, in *GetVLANRequest, opts ...grpc.CallOption) (*GetVLANResponse, error) {
+	out := new(GetVLANResponse)
+	err := c.cc.Invoke(ctx, "/vlan.V1/GetVLAN", in, out, opts...)
 	if err != nil {
 		return nil, err
 	}
@@ -53,8 +62,9 @@ func (c *v1Client) GetVLANs(ctx context.Context, in *emptypb.Empty, opts ...grpc
 // All implementations must embed UnimplementedV1Server
 // for forward compatibility
 type V1Server interface {
-	SaveVLAN(context.Context, *VLAN) (*SaveVLANResponse, error)
-	GetVLANs(context.Context, *emptypb.Empty) (*GetVLANsResponse, error)
+	SaveVLAN(context.Context, *SaveVLANRequest) (*SaveVLANResponse, error)
+	GetVLANs(context.Context, *GetVLANsRequest) (*GetVLANsResponse, error)
+	GetVLAN(context.Context, *GetVLANRequest) (*GetVLANResponse, error)
 	mustEmbedUnimplementedV1Server()
 }
 
@@ -62,11 +72,14 @@ type V1Server interface {
 type UnimplementedV1Server struct {
 }
 
-func (UnimplementedV1Server) SaveVLAN(context.Context, *VLAN) (*SaveVLANResponse, error) {
+func (UnimplementedV1Server) SaveVLAN(context.Context, *SaveVLANRequest) (*SaveVLANResponse, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method SaveVLAN not implemented")
 }
-func (UnimplementedV1Server) GetVLANs(context.Context, *emptypb.Empty) (*GetVLANsResponse, error) {
+func (UnimplementedV1Server) GetVLANs(context.Context, *GetVLANsRequest) (*GetVLANsResponse, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method GetVLANs not implemented")
+}
+func (UnimplementedV1Server) GetVLAN(context.Context, *GetVLANRequest) (*GetVLANResponse, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method GetVLAN not implemented")
 }
 func (UnimplementedV1Server) mustEmbedUnimplementedV1Server() {}
 
@@ -82,7 +95,7 @@ func RegisterV1Server(s grpc.ServiceRegistrar, srv V1Server) {
 }
 
 func _V1_SaveVLAN_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
-	in := new(VLAN)
+	in := new(SaveVLANRequest)
 	if err := dec(in); err != nil {
 		return nil, err
 	}
@@ -94,13 +107,13 @@ func _V1_SaveVLAN_Handler(srv interface{}, ctx context.Context, dec func(interfa
 		FullMethod: "/vlan.V1/SaveVLAN",
 	}
 	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
-		return srv.(V1Server).SaveVLAN(ctx, req.(*VLAN))
+		return srv.(V1Server).SaveVLAN(ctx, req.(*SaveVLANRequest))
 	}
 	return interceptor(ctx, in, info, handler)
 }
 
 func _V1_GetVLANs_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
-	in := new(emptypb.Empty)
+	in := new(GetVLANsRequest)
 	if err := dec(in); err != nil {
 		return nil, err
 	}
@@ -112,7 +125,25 @@ func _V1_GetVLANs_Handler(srv interface{}, ctx context.Context, dec func(interfa
 		FullMethod: "/vlan.V1/GetVLANs",
 	}
 	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
-		return srv.(V1Server).GetVLANs(ctx, req.(*emptypb.Empty))
+		return srv.(V1Server).GetVLANs(ctx, req.(*GetVLANsRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _V1_GetVLAN_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(GetVLANRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(V1Server).GetVLAN(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: "/vlan.V1/GetVLAN",
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(V1Server).GetVLAN(ctx, req.(*GetVLANRequest))
 	}
 	return interceptor(ctx, in, info, handler)
 }
@@ -131,6 +162,10 @@ var V1_ServiceDesc = grpc.ServiceDesc{
 		{
 			MethodName: "GetVLANs",
 			Handler:    _V1_GetVLANs_Handler,
+		},
+		{
+			MethodName: "GetVLAN",
+			Handler:    _V1_GetVLAN_Handler,
 		},
 	},
 	Streams:  []grpc.StreamDesc{},

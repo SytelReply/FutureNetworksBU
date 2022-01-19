@@ -1,13 +1,12 @@
 syntax= "proto3";
 
-import "google/protobuf/empty.proto";
-
 option go_package = "./vlan";
 package vlan;
 
 service V1 {
-  rpc SaveVLAN (VLAN) returns (SaveVLANResponse) {}
-  rpc GetVLANs (google.protobuf.Empty) returns (GetVLANsResponse) {}
+  rpc SaveVLAN (SaveVLANRequest) returns (SaveVLANResponse) {}
+  rpc GetVLANs (GetVLANsRequest) returns (GetVLANsResponse) {}
+  rpc GetVLAN (GetVLANRequest) returns (GetVLANResponse) {}
 }
 
 message VLAN {
@@ -15,15 +14,25 @@ message VLAN {
   string vlan = 2;
 }
 
+// Get VLAN
+message SaveVLANRequest {
+    VLAN vlan = 1;
+}
 message SaveVLANResponse {
-  State state = 1;
 }
 
+// Get VLANs
+message GetVLANsRequest {
+}
 message GetVLANsResponse {
   repeated VLAN vlans = 1;
 }
 
-enum State {
-  OK = 0;
-  NOK = 1;
+// Get VLAN
+message GetVLANRequest {
+  string id = 1;
 }
+message GetVLANResponse {
+  VLAN vlan = 1;
+}
+

@@ -1,11 +1,12 @@
 package rest
 
 import (
-	grpcserver "code-challenge/internal/grpc"
 	vlanproto "code-challenge/protos"
 	"fmt"
 	"log"
 	"net/http"
+	"os"
+	"strconv"
 
 	"google.golang.org/grpc"
 
@@ -14,7 +15,8 @@ import (
 
 var Server *server
 
-const port = 8081
+var GRPC_SERVER_PORT = os.Getenv("GRPC_SERVER_PORT")
+var REST_SERVER_PORT = os.Getenv("REST_SERVER_PORT")
 
 type server struct {
 	port   int
@@ -22,18 +24,28 @@ type server struct {
 }
 
 func init() {
+	if GRPC_SERVER_PORT == "" || REST_SERVER_PORT == "" {
+		log.Fatal("Missing environment variables")
+	}
+	restPortParsed, err := strconv.Atoi(REST_SERVER_PORT)
+	if err != nil {
+		log.Fatal(err)
+	}
+
+	fmt.Printf("Starting rest server on port %s\n", REST_SERVER_PORT)
 	r := mux.NewRouter()
 	h := &handler{
 		grpcClient: grpcClient(),
 	}
 	r.HandleFunc("/vlans", h.postVlan).Methods("POST", "OPTIONS")
 	r.HandleFunc("/vlans", h.getVlans).Methods("GET", "OPTIONS")
+	r.HandleFunc("/vlans/{id}", h.getVlan).Methods("GET", "OPTIONS")
 
-	Server = &server{port: port, router: r}
+	Server = &server{port: restPortParsed, router: r}
 }
 
 func grpcClient() vlanproto.V1Client {
-	conn, err := grpc.Dial(fmt.Sprintf("localhost:%d", grpcserver.Port), grpc.WithInsecure(), grpc.WithBlock())
+	conn, err := grpc.Dial(fmt.Sprintf("localhost:%s", GRPC_SERVER_PORT), grpc.WithInsecure(), grpc.WithBlock())
 	if err != nil {
 		log.Fatalf("did not connect: %v", err)
 	}

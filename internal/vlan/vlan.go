@@ -28,3 +28,26 @@ func Save(id, vlan string) {
 func VLANs() []*vlanproto.VLAN {
 	return vlans
 }
+
+func IsDuplicate(vlan *vlanproto.VLAN) bool {
+	if len(vlans) == 0 {
+		return false
+	}
+
+	for _, x := range vlans {
+		if x.Vlan == vlan.Vlan || x.Id == vlan.Id {
+			return true
+		}
+	}
+
+	return false
+}
+
+func GetVLAN(id string) *vlanproto.VLAN {
+	for _, x := range vlans {
+		if x.Id == id {
+			return x
+		}
+	}
+	return nil
+}
