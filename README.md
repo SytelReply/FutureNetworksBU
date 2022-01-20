@@ -62,7 +62,7 @@ Requires JSON body:
     "id": string,
     "vlan": string
 }
-Neither of these 2 fields may be duplicated
+Neither of these 2 fields may be duplicated, if duplicate data is submitted you will receive a 400 response
 ```
 ```
 Fetch all available VLANs:
