@@ -5,7 +5,7 @@ metadata:
 spec:
   ports:
     - name: http
-      port: 80
+      port: 8081
       targetPort: 8081
     - name: grpc
       port: 8080
@@ -38,13 +38,11 @@ spec:
           env:
             - name: GRPC_SERVER_PORT
               value: "8080"
-            - name: HTTP_SERVER_PORT
-              value: "8081"
 ---
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: net-reply-http
+  name: net-reply-rest
   labels:
     app: net-reply
 spec:
@@ -58,12 +56,14 @@ spec:
         app: net-reply
     spec:
       containers:
-        - name: net-reply-http-container
-          image: jamesmilligan/net-reply-http
+        - name: net-reply-rest-container
+          image: jamesmilligan/net-reply-rest
           ports:
             - containerPort: 8081
           env:
             - name: GRPC_SERVER_PORT
               value: "8080"
+            - name: GRPC_NETWORK_ADDRESS
+              value: "net-reply-service"
             - name: REST_SERVER_PORT
               value: "8081"
