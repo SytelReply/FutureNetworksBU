@@ -36,13 +36,13 @@ NOT COMPLETE
 
 ## How to run the services
 
-#####to deploy to kubernetes cluster:
+##### to deploy to kubernetes cluster:
 
 ```
 kubectl create -f net-reply.yaml
 ```
 
-#####to deploy locally:
+##### to deploy locally:
 
 ```
 go run cmd/grpcserver/main.go
