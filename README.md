@@ -81,8 +81,10 @@ Fetch VLAN by ID:
 GET http://{ip}:8081/vlans/{id}
 Expected Response:
 {
-    "id": string,
-    "vlan": string
+    "vlan": {
+        "id": string,
+        "vlan": string
+    }
 }
 If the provided VLAN ID does not exist in the system, a 404 will be received
 ```
