@@ -28,11 +28,8 @@ COMPLETE
 3. Implement the above rpc in our grpc handler & create a gateway REST handler that makes a call to this new rpc (in a similar fashion to the other gateway handlers).
 4. Dockerise and make these services configurable (e.g. ports/addresses/timeouts).
 5. Create kubernetes config to allow this to be deployed to a cluster.
-
-7. Document how to run the services.
-
-NOT COMPLETE
 6. Ensure reasonably production ready (e.g. unit tests).
+7. Document how to run the services.
 
 ## How to run the services
 
@@ -93,6 +90,6 @@ If the provided VLAN ID does not exist in the system, a 404 will be received
 Change method for storing the data (should be using a volume), at present this data is stored in the memory 
 of each net-reply-grpc-container meaning that data is lost when the pod is restarted / duplicated when pod is replicated.
 
-Build unit tests for both the grpc handlers and rest handlers
+Create the remaining unit tests
 
 Configure scaling of the kubernetes deployments
