@@ -9,12 +9,11 @@ import (
 	"google.golang.org/grpc/status"
 )
 
-type handler struct {
+type Handler struct {
 	vlanproto.UnimplementedV1Server
 }
 
-func (h *handler) SaveVLAN(ctx context.Context, v *vlanproto.SaveVLANRequest) (*vlanproto.SaveVLANResponse, error) {
-
+func (h *Handler) SaveVLAN(ctx context.Context, v *vlanproto.SaveVLANRequest) (*vlanproto.SaveVLANResponse, error) {
 	// Check if provided VLAN / Id have previously been stored
 	if vlan.IsDuplicate(v.Vlan) {
 		return &vlanproto.SaveVLANResponse{}, status.Errorf(codes.InvalidArgument,
@@ -26,11 +25,11 @@ func (h *handler) SaveVLAN(ctx context.Context, v *vlanproto.SaveVLANRequest) (*
 	return &vlanproto.SaveVLANResponse{}, nil
 }
 
-func (h *handler) GetVLANs(ctx context.Context, _ *vlanproto.GetVLANsRequest) (*vlanproto.GetVLANsResponse, error) {
+func (h *Handler) GetVLANs(ctx context.Context, _ *vlanproto.GetVLANsRequest) (*vlanproto.GetVLANsResponse, error) {
 	return &vlanproto.GetVLANsResponse{Vlans: vlan.VLANs()}, nil
 }
 
-func (h *handler) GetVLAN(ctx context.Context, v *vlanproto.GetVLANRequest) (*vlanproto.GetVLANResponse, error) {
+func (h *Handler) GetVLAN(ctx context.Context, v *vlanproto.GetVLANRequest) (*vlanproto.GetVLANResponse, error) {
 	res := vlan.GetVLAN(v.Id)
 	if res == nil {
 		return &vlanproto.GetVLANResponse{}, status.Errorf(codes.NotFound,

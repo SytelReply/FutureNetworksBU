@@ -16,7 +16,7 @@ func (a *App) Run() error {
 	fmt.Printf("Starting gRPC server on port %s\n", a.config.GrpcPort)
 
 	srv := grpc.NewServer()
-	vlanproto.RegisterV1Server(srv, &handler{})
+	vlanproto.RegisterV1Server(srv, &Handler{})
 
 	lis, err := net.Listen("tcp", fmt.Sprintf(":%s", a.config.GrpcPort))
 	if err != nil {

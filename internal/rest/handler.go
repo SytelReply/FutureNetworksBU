@@ -22,6 +22,13 @@ type postVlanRequest struct {
 // postVlan stores a new key value pair in the system
 func (h *handler) postVlan(w http.ResponseWriter, r *http.Request) {
 	var req postVlanRequest
+
+	if r.Body == nil {
+		fmt.Println("No body provided in request")
+		w.WriteHeader(http.StatusBadRequest)
+		return
+	}
+
 	if err := json.NewDecoder(r.Body).Decode(&req); err != nil {
 		fmt.Println(err)
 		w.WriteHeader(http.StatusInternalServerError)
@@ -35,7 +42,6 @@ func (h *handler) postVlan(w http.ResponseWriter, r *http.Request) {
 	}
 
 	fmt.Printf("Received VLAN and Id pair %s %s\n", req.VLAN, req.ID)
-
 	_, err := h.grpcClient.SaveVLAN(r.Context(), &vlanproto.SaveVLANRequest{
 		Vlan: &vlanproto.VLAN{
 			Id:   req.ID,
